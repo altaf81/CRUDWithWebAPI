@@ -21,7 +21,7 @@ namespace CRUDWithWebAPI.Controllers
         }
 
         // GET: api/Emp/5
-        public Employee Get(string id)
+        public Employee Get(int id)
         {
             EmployeeDb eDb = new EmployeeDb();
             Employee emp = eDb.GetOneEmp(id);
@@ -29,13 +29,17 @@ namespace CRUDWithWebAPI.Controllers
         }
 
         // POST: api/Emp
-        public void Post([FromBody]string value)
+        public string Post([FromBody]Employee emp)
         {
+            EmployeeDb eDb = new EmployeeDb();
+            string result = eDb.InsertEmp(emp);
+            return result;
         }
 
         // PUT: api/Emp/5
         public void Put(int id, [FromBody]string value)
         {
+
         }
 
         // DELETE: api/Emp/5

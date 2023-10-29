@@ -45,7 +45,7 @@ namespace CRUDWithWebAPI.Services
             }     
         }
 
-        public Employee GetOneEmp(string id)
+        public Employee GetOneEmp(int id)
         {
             try
             {
@@ -66,6 +66,34 @@ namespace CRUDWithWebAPI.Services
                     emp.Doj = dt.Rows[0]["doj"].ToString();
                 }
                 return emp;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string InsertEmp(Employee emp)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(cs);
+                SqlCommand cmd = new SqlCommand("sp_Emp", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@action", "insert");
+                cmd.Parameters.AddWithValue("@name", emp.Name);
+                cmd.Parameters.AddWithValue("@salary", emp.Salary);
+                cmd.Parameters.AddWithValue("@age", emp.Age);
+                cmd.Parameters.AddWithValue("@doj", emp.Doj);
+
+                con.Open();
+                int rows = cmd.ExecuteNonQuery();
+                con.Close();
+                if (rows > 0)
+                {
+                    return "Data inserted";
+                }
+                return "Data not inserted";
             }
             catch (Exception ex)
             {
