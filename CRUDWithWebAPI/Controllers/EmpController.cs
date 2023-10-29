@@ -21,9 +21,11 @@ namespace CRUDWithWebAPI.Controllers
         }
 
         // GET: api/Emp/5
-        public string Get(int id)
+        public Employee Get(string id)
         {
-            return "value";
+            EmployeeDb eDb = new EmployeeDb();
+            Employee emp = eDb.GetOneEmp(id);
+            return emp;
         }
 
         // POST: api/Emp

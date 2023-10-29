@@ -42,9 +42,35 @@ namespace CRUDWithWebAPI.Services
             catch (Exception ex)
             {
                 throw ex;
+            }     
+        }
+
+        public Employee GetOneEmp(string id)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                SqlConnection con = new SqlConnection(cs);
+                SqlCommand cmd = new SqlCommand("sp_Emp", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@action", "selectOne");
+                cmd.Parameters.AddWithValue("@id", id);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                sda.Fill(dt);
+                Employee emp = new Employee();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    emp.Name = dt.Rows[0]["name"].ToString();
+                    emp.Salary = Convert.ToInt32(dt.Rows[0]["Salary"]);
+                    emp.Age = Convert.ToString(dt.Rows[0]["Age"]);
+                    emp.Doj = dt.Rows[0]["doj"].ToString();
+                }
+                return emp;
             }
-            
-            
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
