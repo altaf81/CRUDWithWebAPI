@@ -37,14 +37,19 @@ namespace CRUDWithWebAPI.Controllers
         }
 
         // PUT: api/Emp/5
-        public void Put(int id, [FromBody]string value)
+        public string Put(int id, [FromBody]Employee emp)
         {
-
+            EmployeeDb eDb = new EmployeeDb();
+            string result = eDb.UpdateEmp(id, emp);
+            return result;
         }
 
         // DELETE: api/Emp/5
-        public void Delete(int id)
+        public string Delete(int id)
         {
+            EmployeeDb eDb = new EmployeeDb();
+            string result = eDb.DeleteEmp(id);
+            return result;
         }
     }
 }

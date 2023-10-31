@@ -75,9 +75,9 @@ namespace CRUDWithWebAPI.Services
 
         public string InsertEmp(Employee emp)
         {
+            SqlConnection con = new SqlConnection(cs);
             try
             {
-                SqlConnection con = new SqlConnection(cs);
                 SqlCommand cmd = new SqlCommand("sp_Emp", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@action", "insert");
@@ -87,8 +87,7 @@ namespace CRUDWithWebAPI.Services
                 cmd.Parameters.AddWithValue("@doj", emp.Doj);
 
                 con.Open();
-                int rows = cmd.ExecuteNonQuery();
-                con.Close();
+                int rows = cmd.ExecuteNonQuery();                
                 if (rows > 0)
                 {
                     return "Data inserted";
@@ -98,6 +97,70 @@ namespace CRUDWithWebAPI.Services
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public string UpdateEmp(int id, Employee emp)
+        {
+            SqlConnection con = new SqlConnection(cs);
+            try
+            {                
+                SqlCommand cmd = new SqlCommand("sp_Emp", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@action", "update");
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@name", emp.Name);
+                cmd.Parameters.AddWithValue("@salary", emp.Salary);
+                cmd.Parameters.AddWithValue("@age", emp.Age);
+                cmd.Parameters.AddWithValue("@doj", emp.Doj);
+
+                con.Open();
+                int rows = cmd.ExecuteNonQuery();
+                if (rows > 0)
+                {
+                    return "Data Updated";
+                }
+                return "Data is not updated";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public string DeleteEmp(int id)
+        {
+            SqlConnection con = new SqlConnection(cs);
+            try
+            {
+                SqlCommand cmd = new SqlCommand("sp_Emp", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@action", "delete");
+                cmd.Parameters.AddWithValue("@id", id);
+
+                con.Open();
+                int rows = cmd.ExecuteNonQuery();
+                if (rows > 0)
+                {
+                    return "Data Deleted";
+                }
+                return "Data is not deleted";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
             }
         }
     }
